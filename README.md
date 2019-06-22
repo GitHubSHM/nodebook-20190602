@@ -9,3 +9,6 @@
 4.java多线程
 5.redis
 6.nexus私服搭建
+
+解决git命令显示文件改动时中文乱码问题
+执行如下命令：#git config --global core.quotepath false
