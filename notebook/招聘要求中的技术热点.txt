@@ -1,0 +1,33 @@
+
+掌握常用的设计模式，熟悉JVM(内存模型、类加载机制)
+熟悉分布式、多线程、高并发原理和设计模式
+熟悉主流消息队列技术、MQ、Zookeeper、单点认证方案
+熟悉Http协议、WebServices及XMl的基本操作和Restfull风格程序开发过程
+
+Java框架
+Structs\hibernate\springboot\springcloud微服务框架\dubbo（RPC框架）
+
+web容器
+weblogic服务器\jetty服务器\nginx反向代理服务器\
+
+IDEA及项目管理工具
+intellig idea(智能开发工具)\git（分布式版本控制系统）
+
+数据库及缓存技术
+redis数据库\DB2数据库\memcached缓存技术\
+
+java开源类库
+freemaker前端模板引擎、Velocity前端模板引擎、sola搜索框架、ElasticSearch搜索框架、Activiti工作流
+
+javaweb操作excel框架1.apache poi 2.java excel
+https://blog.csdn.net/vbirdbest/article/details/72870714
+
+前端相关技术
+javascript
+bootstrap
+angularJS
+EasyUI
+ReactJS
+AJAX
+
+jquary、ZTree、MiniUi、ExtJS、VUE、ECharts、eEditor、BMap
