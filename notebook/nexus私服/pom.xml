@@ -1,0 +1,186 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.yz</groupId>
+  <artifactId>SpringMvc03-SSM</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  
+  <!-- 初始化框架的版本号，这里定义一个公用的变量，用来指定版本号  用${标签名}引用值 -->
+	<properties>
+		<spring.version>4.3.3.RELEASE</spring.version>
+	</properties>
+	
+		<distributionManagement>
+		<repository>
+		<id>nexus-releases</id>
+		<name>Nexus Release Repository</name>
+		<url>http://192.168.80.128:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+		<id>nexus-snapshots</id>
+		<name>Nexus Snapshot Repository</name>
+		<url>http://192.168.80.128:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		</distributionManagement>
+  <!-- 配置maven插件 -->
+	<build>
+	<plugins>
+	<!-- java编译插件 -->
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.2</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+				<encoding>UTF-8</encoding>
+			</configuration>
+		</plugin>
+		
+		<!-- 配置tomcat7插件,因为tomcat6不支持jdk1.8版本 -->
+       <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+               <configuration>
+                  <path>/SpringMvc03-SSM</path>
+                  <port>8080</port>
+                  <uriEncoding>UTF-8</uriEncoding>
+                  <server>tomcat7</server>
+               </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+        </plugin>
+        
+	</plugins>
+	</build>
+	
+	<dependencies>
+	<!-- 加入ServletAPI -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+	<!-- MySQL依赖-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.38</version>
+		</dependency>
+	<!-- 加入MyBatis依赖 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.5</version>
+		</dependency>
+	<!-- Log4j start -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+	<!-- 引入Spring(包含SpringMVC) 依赖 start -->
+	<!-- Spring整合web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+	<!-- MyBatis整合Spring -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis-spring</artifactId>
+		    <version>1.3.0</version>
+		</dependency>
+    <!-- JSTL -->
+    <dependency>
+    	<groupId>jstl</groupId>
+    	<artifactId>jstl</artifactId>
+    	<version>1.2</version>
+    </dependency>
+    <!-- alibaba druid数据库连接池 -->
+    <dependency>
+    	<groupId>com.alibaba</groupId>
+    	<artifactId>druid</artifactId>
+    	<version>1.1.10</version>
+    </dependency>
+    <!-- jackson相关 -->
+     <dependency>
+	 <groupId>com.fasterxml.jackson.core</groupId>
+	 <artifactId>jackson-core</artifactId>
+	 <version>2.7.3</version>
+    </dependency>
+	<dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId>
+	  <version>2.7.3</version>
+	</dependency>
+	<dependency>
+     <groupId>com.fasterxml.jackson.core</groupId>
+     <artifactId>jackson-annotations</artifactId>
+     <version>2.7.3</version>
+    </dependency>
+    
+	<dependency>
+		<groupId>com.github.pagehelper</groupId>
+		<artifactId>pagehelper</artifactId>
+		<version>5.1.2</version>
+	</dependency>
+	
+	<dependency>
+      <groupId>org.apache.geronimo.bundles</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.6.8_2</version>
+    </dependency>
+
+	</dependencies>
+</project>

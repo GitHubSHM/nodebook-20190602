@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <!-- 
+   
+   
+                                                                               ÅäÖÃ±¾µØ²Ö¿â´æ´¢µØÖ·
+  -->
+                                                          <localRepository>E:\m2\repository1</localRepository>
+ 
+
+  
+
+  
+  <pluginGroups>
+    
+  </pluginGroups>
+
+  
+  <proxies>
+   
+  </proxies>
+
+  
+  <servers>
+    
+    
+
+     <server>
+      <id>nexus-releases</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+
+    <server>
+      <id>nexus-snapshots</id>
+      <username>deployment</username>
+      <password>deployment123</password>
+    </server>
+
+  </servers>
+
+  
+  <mirrors>
+                                                               <!-- °¢ÀïÔÆÔ¶³Ì²Ö¿â 
+                                                                     <mirror>
+                                                                               <id>alimaven</id>
+                                                                               <name>aliyun maven</name>
+                                                                       <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+                                                                               <mirrorOf>central</mirrorOf>        
+                                                                    </mirror>-->
+  </mirrors>
+
+  
+  <profiles>
+    
+
+   
+
+    <profile>
+       <id>mynexus</id>
+       <activation>
+          <activeByDefault>false</activeByDefault>  <!-- ÊÇ·ñÎª»î¶¯×´Ì¬-->
+          <jdk>1.7</jdk>   
+       </activation>
+      <repositories>
+         <repository>
+             <id>nexus</id>
+             <url>http://192.168.80.128:8081/nexus/content/groups/public/</url>
+  	     <releases>
+             <enabled>true</enabled>
+             </releases>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
+         </repository>
+      </repositories>
+	<pluginRepositories>
+	 <pluginRepository>
+	<id>central</id>
+
+	<url>http://192.168.80.128:8081/nexus/content/groups/public/</url>
+
+	<releases>
+	<enabled>true</enabled>
+
+	</releases>
+
+	<snapshots>
+	<enabled>true</enabled>
+	</snapshots>
+	</pluginRepository> 
+
+	</pluginRepositories>
+
+
+   
+    </profile>
+        
+
+
+  </profiles>
+
+   <activeProfiles>
+ 
+        <activeProfile>mynexus</activeProfile>
+ 
+  </activeProfiles>
+
+</settings>
