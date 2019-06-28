@@ -1,0 +1,30 @@
+            <build>
+	        <plugins>
+			<!-- 发布源码插件 -->
+			<!-- 注意事项：私服releases仓库默认不允许重新发布之前已经发布过的项目，即重新部署，可以在OSS平台设置  Deployment                         Policy 为 Allow Redeploy -->
+			<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<executions>
+			<execution>
+			<id>attach-sources</id>
+			<goals>
+			<goal>jar</goal>
+			</goals>
+			</execution>
+			</executions>
+			</plugin>
+		</plugins>
+           </build>   
+ 
+	<!-- 项目发布到私服的目标地址 -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>http://192.168.80.128:8082/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://192.168.80.128:8082/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>

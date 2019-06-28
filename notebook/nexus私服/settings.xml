@@ -1,75 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
   <!-- 
-   
-   
-                                                                               配置本地仓库存储地址
+  配置本地仓库存储地址
   -->
-                                                          <localRepository>E:\m2\repository1</localRepository>
- 
-
+  <localRepository>E:\m2\repository1</localRepository>
   
-
-  
-  <pluginGroups>
-    
-  </pluginGroups>
-
-  
-  <proxies>
-   
-  </proxies>
-
-  
+  <!-- 为了可以将本地jar包可以上传到私服的 （快照库与正式库）在这里配置私服的账户 
+       一般，仓库的下载和部署是在pom.xml文件中的repositories和distributionManagement元素中定义的。然而，一般类似用户名、密码（有些仓库访问是需要安全认证的）等信息不应该在pom.xml文件中配置，这些信息可以配置在settings.xml中。
+  -->
   <servers>
-    
-    
-
      <server>
-      <id>nexus-releases</id>
+      <id>releases</id>
       <username>deployment</username>
       <password>deployment123</password>
     </server>
-
     <server>
-      <id>nexus-snapshots</id>
+      <id>snapshots</id>
       <username>deployment</username>
       <password>deployment123</password>
     </server>
-
   </servers>
 
   
   <mirrors>
-                                                               <!-- 阿里云远程仓库 
-                                                                     <mirror>
-                                                                               <id>alimaven</id>
-                                                                               <name>aliyun maven</name>
-                                                                       <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-                                                                               <mirrorOf>central</mirrorOf>        
-                                                                    </mirror>-->
+  <!-- 私服镜像 -->
+     <mirror>
+      <id>nexus</id>
+      <name>nexus maven</name>
+      <url>http://192.168.80.128:8082/nexus/content/groups/public/</url>
+      <mirrorOf>*</mirrorOf>        
+     </mirror>
+
+    <!-- 阿里云仓库镜像
+     <mirror>
+       <id>alimaven</id>
+       <name>aliyun maven</name>
+       <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+       <mirrorOf>central</mirrorOf>        
+     </mirror>-->
+	 
+   <!-- 中央仓库镜像 	 
+	 <mirror>  
+      <id>repo2</id>  
+      <mirrorOf>central</mirrorOf>  
+      <name>Human Readable Name for this Mirror.</name>  
+      <url>http://repo2.maven.org/maven2/</url>  
+    </mirror>-->
+
   </mirrors>
 
-  
   <profiles>
-    
-
-   
-
+    <!--配置jdk与私服构建-->
     <profile>
        <id>mynexus</id>
        <activation>
-          <activeByDefault>false</activeByDefault>  <!-- 是否为活动状态-->
-          <jdk>1.7</jdk>   
+          <activeByDefault>true</activeByDefault>  <!-- 是否为活动状态-->
+          <jdk>1.8</jdk> 
        </activation>
+	   <properties>
+          <maven.compiler.source>1.8</maven.compiler.source>
+          <maven.compiler.target>1.8</maven.compiler.target>
+          <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+       </properties>
       <repositories>
          <repository>
              <id>nexus</id>
-             <url>http://192.168.80.128:8081/nexus/content/groups/public/</url>
+             <url>http://192.168.80.128:8082/nexus/content/groups/public/</url>
   	     <releases>
              <enabled>true</enabled>
              </releases>
@@ -77,12 +76,14 @@
 			<enabled>true</enabled>
 		</snapshots>
          </repository>
+
+
       </repositories>
 	<pluginRepositories>
 	 <pluginRepository>
 	<id>central</id>
 
-	<url>http://192.168.80.128:8081/nexus/content/groups/public/</url>
+	<url>http://192.168.80.128:8082/nexus/content/groups/public/</url>
 
 	<releases>
 	<enabled>true</enabled>
@@ -97,17 +98,12 @@
 	</pluginRepositories>
 
 
-   
     </profile>
-        
-
-
   </profiles>
 
+   <!-- 激活私服构建 -->
    <activeProfiles>
- 
         <activeProfile>mynexus</activeProfile>
- 
   </activeProfiles>
 
 </settings>
