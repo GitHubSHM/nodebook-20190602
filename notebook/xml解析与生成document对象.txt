@@ -1,0 +1,90 @@
+<?XML version="" encoding="UTF-8" ?>
+
+DTD  Document Type Definition  文档类型定义   用来约束xml文档格式   保证有效
+
+内部DTD
+ <?XML version="" encoding="UTF-8" ?>  
+ <!DOCTYPE score根元素名称 [ 元素声明
+<!ELEMENT student根元素下子元素名 (name[数量词],age,course)>
+<!ATTLIST student元素名称 id属性名 CDATA属性类型 #REQUIRED默认值>  #IMPLED
+<!ELEMENT name (#PCDATA)>只能是文字不能是子标签
+数量词
++ : 至少一次
+？：0或1次
+*：任意次
+]>
+
+外部DTD
+创建外部文件.dtd
+ <?XML version="" encoding="UTF-8" ?> 
+<!ELEMENT scores (student+)> 根元素score下至少一个student元素
+<!ELEMENT student (name.course,score)>student元素下的三个元素
+<!ATTLIST student id CDATA #REQUIRED>student元素中的id属性，字符串类型，必须有默认值
+<!ELEMENT name (@PCDATA)> name元素内为内容  不再是标签
+引入
+<！DOCTYPE 根元素名 SYSTEM "文件名.dtd">
+注意空格   引入后验证一下
+
+XSD是DTD替代者  使用xml文档来定义  比DTD复杂   功能更强大
+
+xml解析
+解析技术  
+DOM解析  sum官方   给予xml树结构 耗资源 适用于多次访问xml     
+SAX                    基于事件，消耗资源小   适用于数据量较大的xml
+JDOM                开源   比DOM快  仅使用具体类而不是接口
+dom4j               开源  java xml api  性能优异   功能强大  使用接口而                            不是实现类
+hiberbate  冬眠的意思
+
+
+DOM4J
+1.获取Document对象  org.dom4j.io
+SAXReader reader = new SAXReader();
+Document read = reader.read(new File(""));//reader.read(new File(""));  alt shift L 自动生成返回值对象
+Element rootElement = read.getRootElement();//根元素
+Iterator<Element> iter = rootElement.elementIterator();//子元素迭代器
+Iterator attributeIterator = rootElement.attributeIterator();//属性迭代器
+Attribute attribute = rootElement.attribute(0);//通过索引找到属性值
+Attribute attribute2 = rootElement.attribute("通过名称找到属性值");
+
+Element element = rootElement.element("");//通过名称获取子元素的值
+element.getName();
+
+element.getStringValue();
+element.getText();
+  
+2.对象生成xml文件
+//生成一个document对象
+Document createDocument = DocumentHelper.createDocument();
+//添加并得到根元素
+Element root = createDocument.addElement("books");
+Element book = root.addElement("book");//添加子元素
+book.addAttribute("id", "001").addAttribute("type", "string");//添加属性   返回元素本身 方便链式编程
+
+Element title = book.addElement("title");
+title.addText("java大全");//添加文本	
+
+Writer writer = new FileWriter(new File(""));//创建字符文件输出流
+createDocument.write(writer);//将输出流传入documentwrite中
+writer.close();//关闭流
+
+3.将数据库数据备份到xml文件
+//将java list集合数据输出到xml文件中
+List<Book> listdata = new ArrayList<>();
+Document document = DocumentHelper.createDocument();
+Element books = document.addElement("objs");
+for(Book ebook:listdata){
+	books.addElement("book")
+	.addAttribute("id", ebook.getId())
+	.addAttribute("title", ebook.getTitle())
+	.addText(ebook.getNumber());
+}
+//输出到文件
+OutputFormat format = OutputFormat.createPrettyPrint();
+XMLWriter xmlWriter = new XMLWriter(new FileWriter("src/books_data.xml"),format);
+xmlWriter.write(document);
+xmlWriter.close();
+
+
+
+ 
+
