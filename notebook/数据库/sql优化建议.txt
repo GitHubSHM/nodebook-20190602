@@ -1,0 +1,48 @@
+sql优化建议
+
+1.避免使用全表扫描，考虑在where及order by设计列上建立索引
+2.避免在where子句中作null值判断，否则导致引擎放弃使用索引而进行全表扫描
+3.避免在where子句中使用!= 、 <>操作符，否则导致引擎放弃使用索引而进行全表扫描
+#建立索引的sql语句
+#mysql自动创建聚合索引的特性
+#聚簇索引
+4.尽量避免在where子句中使用or连接
+推荐使用union all代替
+5.in  not in   慎用    between and  可替代
+6.like模糊查询，应避免左模糊，导致放弃索引
+7.避免在where子句中对字段使用计算表达式，比如 num/2=3应为 num=2*3
+8.避免在where子句中对字段进行函数操作，
+where substring(name,1,3)='abc' 以abc开头   改为   name like 'abc%'
+9.where  子句  等于号的左边   应避免函数、算数、表达式运算操作
+10.使用索引作条件，如果为复合索引，那么必须使用到索引中的第一个索引作为条件才能使引擎采用索引（最左前缀），尽可能保持条件中字段顺序与索引顺序一致
+11.某些场合 exists 代替 in
+select num from a where num in(select num from b)
+替换成   select num from a where exists（select 1 from b where a.num=b.num
+12.索引应选择重复值尽量少的字段上建立
+13.一个表的索引最好不超过6个
+14.尽量使用数字型字段，若只含数值信息应不要设计为字符型，因为这样会降低查询和连接的性能，增加存储开销，因为引擎在处理查询和连接时会逐个比较字符串中的每一个字符，而对于数字型而言比较一次就够了
+15.使用verchar代替char定长字段，占用空间更小，查询效率更高
+17.任何地方都不要使用select * from t  ,使用具体列，并且只查询用得到的字段
+
+什么样的字段适合建立索引
+1.经常需要搜索的列
+2.主键列
+3.经常用作连接的列
+4.经常需要根据范围进行搜索的列  birthday between start and end  因为索引是排序好之后进行存储的，指定范围是连续的
+6.经常需要排序的列，理由同上，索引是排序的，利用索引的排序加快整个查询时间
+7.经常使用在where中的列
+建立索引，一般按照where条件中的列建立，例如where f1 and f2  那么我们在字段f1或者f2上建立索引是没有用的，只有同时建立索引才有用
+
+
+
+
+数据库引擎
+
+查看数据库支持引擎
+show engines
+查看数据库当前默认引擎
+show variables like '%storage_engine%';
+查看数据表使用的引擎,通过查看表创建语句查看
+show create table <table_name>
+修改表的存储引擎
+alter table <table_name> engine = <engine_name>
