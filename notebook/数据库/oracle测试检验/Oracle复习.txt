@@ -1,0 +1,156 @@
+1 创建一个表
+create table newtable(
+   nid number(10) not null primary key,
+   name varchar2(10) unique);
+
+2 修改列名
+alter table newtable rename column name to nname;
+
+3 修改列数据类型
+alter table newtable modify name number(10);
+
+4 删除表结构和数据
+drop table 表名;
+  删除表中数据（可以恢复，通过rollback回滚，）
+delete from 表名;
+  删除表数据
+truncate table 表名;
+
+5 增加字段
+alter table newtable add (age number(10),sex char(2));
+
+6 删除字段
+alter table newtable drop column sex;
+
+*合成列并另起显示列名 属性1||属性2 AS "别名";
+
+7 sql语言三种类型
+DML: Data Manipulation Language 数据操纵语言 增删改查操作
+DDL:  Data Definition Language 数据定义语言 创建，删除表，修改表结构
+DCL:  Data Control Language 数据控制语言 授权、撤销、提交、回滚
+
+8 oracle常见数据类型
+1、字符类型
+? CHAR：一个定长字符串，当位数不足自动用空格填充来达到其最大长度
+? VARCHAR2：目前这也是VARCHAR 的同义词，这是一个变长字符串，与CHAR 类型不同，它不会用空格填充至最大长度
+2、数字类型
+? NUMBER：该数据类型能存储精度最多达38位的数字
+3、日期类型
+? DATE：一个7字节的定宽日期/时间数据类型。其中总包含7个属性，包括：世纪、世纪中哪一年、月份、月中的哪一天、小时、分钟和秒
+? TIMESTAMP：一个7 字节或12.字节的定宽日期/时间数据类型。它与DATE 数据类型不同，因为TIMESTAMP 可以包含小数秒（fractional second）；带小数秒的TIMESTAMP 在小数点右边最多可以保留9位。
+4、二进制及大文本数据
+? BLOB： (binary large object)在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。BLOB包含不需要进行字符集转换的“二进制“数据，如果要存储电子表格、字处理文档、图像文件等就很适合采用
+? CLOB：（Character Large Object）在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。CLOB包含要进行字符集转换的信息。这种数据类型很适合存储纯文本信息。
+
+9 增加记录
+增加整条记录：insert into 表名 values(值1，值2...);
+增加记录中的个别属性：insert into 表名（字段1，字段2...）values(值1，值2...);
+10 删除记录
+delete from 表名 where 条件;
+11 更新记录
+update to 表名 set 字段1=值1，字段2=值2...where 条件;
+
+*HAVING类似于WHERE（唯一的差别是WHERE过滤行，HAVING过滤组）    (HAVING支持所有WHERE操作符。
+*select * from dept,emp where emp.deptno=dept.deptno(+);      (dept属于连接表，emp表显示全部
+*select dept.deptno,dept.dname,emp.ename from dept left join emp on dept.deptno=emp.deptno; (左连接,左表显示全部（dept
+*select * from lefttable 左表 inner join 右表 on 左表.主键=右表.外键; （内连接，只显示关联数据
+*select * from 左表 right join  右表  on 左表.主键=右表.外键; (右连接，右表显示全部
+
+12 笛卡尔积（多张表相乘）
+笛卡尔积：多张表关联，将表的所有信息都要显示出来，如果管理不到的数据用null代替。
+
+13 查找指定条数的记录
+select * from emp where rownum<=6;
+   查找指定条数记录并且显示记录编号
+select rownum,e.* from emp e where rownum<=6;
+   查找非两端的一段记录
+select * from (select rownum rn,e.* from emp e) n where n.rn>=3 and n.rn<=5;
+
+14通过查询向表中插入数据
+insert into cc(id,name) select empno,ename from emp;
+
+15合并查询
+1)union 
+该操作符用于取得两个结果集的并集。当使用该操作符时，会自动去掉结果集中重复行。  查询1 union 查询2
+2)union all
+该操作赋与union相似，但是它不会取消重复行,而且不会排序。
+3)intersect
+使用该操作符用于取得两个结果集的交集。
+4) Minus补集
+使用该操作符用于取得两个结果集的差集，它只会显示存在第一个集合中，而不存在第二个集合中的数据。
+
+16 函数部分
+1、lower（char）:将字符串转为小写
+           如：将所有员工的名字转为小写
+2、upper（char）将字符串转为大写
+          如：将所有工资大于2000的人的姓名大写
+3、length（char）返回字符串的长度
+          如：显示名字是5个字符的员工的姓名 
+4、substr(char,m,n)截取字符串，m:从哪开始截取n：是截取几位
+          如：显示所有员工的姓名的前3个字符 
+          如：以首字母大写，其它小写的方式显示所有员工的姓名 
+5.replace（char1，str1，str2）：替换
+         如：显示所有员工的姓名用“我爱”替换所有的A 
+6.instr（char1，char2）:取子串在字符串的位置 
+
+*数学函数
+1.round（n,[m]）:四舍五入
+2.trunc（n,[m]）:截取数字
+3.mod(m,n):取模
+4.floor(n):向下取整
+5.ceil(n):向上取整
+
+*日期函数
+sysdate：返回系统日期
+add_months(d,n):时间点d在加上n月
+Last_day(d):返回指定日期所在月份的最后一天
+
+*转换格式
+1  to_char（字段，'格式'）：将字段指定格式输出
+显示薪水的货币单位  ￥人民币  $美元
+9：显示的是数字，并且忽略前面的0；
+0：显示的是数字，如果位数不足用0补齐；
+$：在数字前加美元符号
+L：在数字前加本地货币符号
+C：在数字前加国际货币符号
+2  to_date 常用的日期函数，是把字符串转换为数据库中得日期类型转换函数
+
+*系统其他函数
+1.ascii  返回与指定的字符对应的十进制数就是ASCII码值;?
+例：返回a的ascii码  select ascii('a') from dual;
+2.chr  给出整数，返回指定的字符
+例：返回97对应的字符  select chr(97) from dual;
+3．Concat 连接两个字符串  
+4.|| 链接字符串
+例如：显示“我是abc”  select '我是'||'ABC' from dual;
+5.initcap('字段')   返回字符串并将字符串的第一个字母变为大写;
+
+* insert into dept values(70,default,default)； 使用默认值
+
+* MERGE
+merge语法是根据源表对目标表进行匹配查询，匹配成功时更新，不成功时插入。
+其基本语法规则是
+merge into 目标表 a
+using 源表 b
+on(a.条件字段1=b.条件字段1 and a.条件字段2=b.条件字段2 ……) ?
+when matched then update set a.更新字段=b.字段
+when ?not macthed then insert into a(字段1,字段2……)values(值1,值2……)
+
+*约束部分
+not null（非空）
+unique（唯一）
+primary key （主键）
+Foreign key（外键）
+check （检查）
+ 
+*查询部门平均工资最高的部门名称和最低的部门名称
+select dname from dept where deptno=(select deptno from (select deptno from emp group by deptno order by avg(sal) ) where rownum<=1)
+    union all select dname from dept where deptno=(select deptno from (select deptno from emp group by deptno order by avg(sal) desc ) where rownum<=1);
+
+
+
+
+
+
+
+
