@@ -1,0 +1,91 @@
+1、查询“001”课程比“002”课程成绩高的所有学生的学号；
+
+SELECT 
+   s1.s_id
+FROM
+(select s_id,score from sc where c_id='001') s1,
+(select s_id,score from sc where c_id='002') s2
+WHERE
+s1.s_id = s2.s_id and s1.score > s2.score 
+
+2、查询平均成绩大于60分的同学的学号和平均成绩；
+
+SELECT
+s.s_id,ROUND(AVG(score),2)
+FROM
+sc s
+GROUP BY
+s.s_id
+HAVING
+AVG(score) > 60
+
+3、查询所有同学的学号、姓名、选课数、总成绩；
+
+SELECT
+st.s_id,st.s_name,COUNT(sc.c_id),ROUND(NVL(SUM(sc.score),0),2)
+FROM
+student st,sc
+WHERE st.s_id = sc.s_id(+)
+GROUP BY st.s_id,st.s_name
+
+4、查询姓“李”的老师的个数；
+
+SELECT COUNT(t_id) FROM teacher where t_name like '李%'  
+  
+5、查询没学过“叶平”老师课的同学的学号、姓名；
+
+select s_id,s_name from student 
+minus
+select s.s_id,s.s_name from student s,sc,
+(select c.c_id from course c,teacher t where t.t_id = c.t_id and t.t_name = '叶平') q
+where s.s_id = sc.s_id and sc.c_id = q.c_id
+
+6、查询学过“001”并且也学过编号“002”课程的同学的学号、姓名；
+
+select DISTINCT st.s_id,st.s_name
+from student st,sc,course c
+where st.s_id = sc.s_id and sc.c_id = c.c_id and c.c_id = '001'
+INTERSECT
+select DISTINCT st.s_id,st.s_name
+from student st,sc,course c
+where st.s_id = sc.s_id and sc.c_id = c.c_id and c.c_id = '002'
+
+7、查询学过“叶平”老师所教的所有课的同学的学号、姓名；
+
+SELECT DISTINCT s.s_id,s.s_name
+FROM sc,student s,course c
+where s.s_id = sc.s_id and sc.c_id = c.c_id and c.c_id in (select co.c_id from course co,teacher t where co.t_id = t.t_id and t.t_name = '叶平')
+
+8、查询课程编号“002”的成绩比课程编号“001”课程低的所有同学的学号、姓名；
+
+SELECT
+s.s_id,s.s_name
+FROM
+student s,
+(select s_id,score from sc where c_id = '002') s1,
+(select s_id,score from sc where c_id='001') s2
+WHERE s.s_id = s1.s_id and s1.s_id = s2.s_id and s1.score < s2.score
+
+9、查询所有课程成绩小于60分的同学的学号、姓名；
+
+SELECT DISTINCT s.s_id,s.s_name
+FROM student s,(SELECT s_id FROM sc WHERE score < 60) s2
+WHERE s.s_id = s2.s_id
+
+10、查询没有学全所有课的同学的学号、姓名；
+
+SELECT
+   s.s_id,s.s_name
+FROM student s,sc
+where s.s_id = sc.s_id(+)
+GROUP BY s.s_id,s.s_name
+HAVING COUNT(sc.c_id)<(select COUNT(c_id) from course )
+
+11、查询至少有一门课与学号为“1001”的同学所学相同的同学的学号和姓名；
+
+SELECT DISTINCT s.s_id,s.s_name
+FROM student s,sc,
+(select sc.c_id from sc where sc.s_id = '1001') c
+WHERE s.s_id = sc.s_id and sc.c_id in c.c_id and s.s_id != '1001'
+
+12、查询至少学过学号为“001”同学所有一门课的其他同学学号和姓名；
