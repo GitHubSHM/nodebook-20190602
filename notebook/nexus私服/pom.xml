@@ -7,7 +7,7 @@
   
   <!-- 初始化框架的版本号，这里定义一个公用的变量，用来指定版本号  用${标签名}引用值 -->
 	<properties>
-		<spring.version>4.3.3.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 	</properties>
 	
 		<distributionManagement>
